@@ -1,13 +1,6 @@
-from jinja2 import Environment, FileSystemLoader, Template
-import jinja2
-import os
-import re
-
-
 import os, re, urllib
 import jinja2
 from jinja2 import Environment, FileSystemLoader, Template
-from pprint import pprint
 
 GITHUB_BASE="https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
 
@@ -35,6 +28,7 @@ def extractor(lines):
         if includes:
             include_text = includes[0].strip("()")
             include_list.append(include_text)
+            
     return {"data_desc": data_desc, "data_title":data_title, "url": url, "include_list": include_list}
  
 

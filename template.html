@@ -59,12 +59,16 @@
               <tr> 
                   <td class="bundlename"><a href="{{bundle.url}}">{{bundle.data_title}}</a></td>
                   <td class="bundledesc">{{bundle.data_desc}} </br>
-                    <p>Includes 
+
+                    {% if bundle.include_list %}
+                    <p>Includes bundle(s):
                       {% for include in bundle.include_list %} 
                       <li>{{include}}</li>
                       {% endfor %}
-                      bundle
                     </p>
+                    {% endif %}
+                    
+
                   </td>
               </tr>
               {% endfor %}

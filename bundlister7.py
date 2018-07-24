@@ -13,11 +13,20 @@ from jinja2 import Environment, FileSystemLoader, Template
 
 
 GITHUB_BASE="https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
+PUNDLES="https://github.com/clearlinux/clr-bundles/blob/master/packages"
 
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
 # PATTERN4 = re.compile(r")
+
+def downloader(bundles, pundles)
+   """
+   Downloads bundles files and packages/pundles file to extract their data
+   """
+
+
+
 
 def extractor(lines): 
     data_title = "title"
@@ -28,9 +37,9 @@ def extractor(lines):
     for i in lines:
         title = PATTERN1.match(i)
         desc = PATTERN2.match(i)
+        desc_pundle = PATTERN2.findall(i)
         includes = PATTERN3.findall(i)
-        # pundle = 
- 
+       
         if title:
             data_title = title.groups(0)[0].strip()
         if desc: 

@@ -49,7 +49,7 @@ def extractor(lines):
 #     return cloned
 
 def bundle_lister():# 
-    git.Git("/Users/michaelevan/temp/intel_python/beautifulsoup-tests/cloned_repo").clone("https://github.com/clearlinux/clr-bundles.git")
+    git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []
     # for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/clr-bundles/bundles", topdown=False):
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):

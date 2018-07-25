@@ -21,14 +21,6 @@ PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
 # PATTERN4 = re.compile(r")
 
-def downloader(bundles, pundles)
-   """
-   Downloads bundles files and packages/pundles file to extract their data
-   """
-
-
-
-
 def extractor(lines): 
     data_title = "title"
     data_desc = "description"

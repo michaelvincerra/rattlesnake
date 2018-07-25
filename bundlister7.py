@@ -8,10 +8,7 @@ import git
 # Write regex to incorporate all alphabetical items from the packages (pundles) page.
 #       https://github.com/clearlinux/clr-bundles/blob/master/packages     
 # Revise all Regex patterns to ignore all lines that begin with #-- as in ALL packages pages. 
-# Write a function that downloads all the files from GITHUB_BASE. 
-# Assure that the os.walk function can perform correctly on above downloaded files if kept in the '/source' directory. 
-# Revise bundle_lister() function below to process the locallly downloaded files. 
-
+# Revise directory structure relative to Makefile in bundle_lister() function. 
 
 GITHUB_BASE="https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
 PUNDLES="https://github.com/clearlinux/clr-bundles/blob/master/packages"

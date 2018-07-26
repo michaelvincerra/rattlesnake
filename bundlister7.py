@@ -42,10 +42,6 @@ def extractor(lines):
             
     return {"data_desc": data_desc, "data_title":data_title, "url": url, "include_list": include_list}
 
-# def git_cloner(): 
-#     cloned = git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo").clone("https://github.com/clearlinux/clr-bundles.git")
-#     return cloned
-
 def bundle_lister():# 
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []

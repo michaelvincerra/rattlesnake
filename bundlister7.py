@@ -16,20 +16,22 @@ PUNDLES="https://github.com/clearlinux/clr-bundles/blob/master/packages"
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
-# PATTERN4 = re.compile(r")
+PATTERN4 = re.compile(r"^((?!#).)*$", re.MULTILINE)
 
 def extractor(lines): 
     data_title = "title"
     data_desc = "description"
     url = "url"
     include_list = []
+    pundles = "pundles"
 
     for i in lines:
         title = PATTERN1.match(i)
         desc = PATTERN2.match(i)
         desc_pundle = PATTERN2.findall(i)
         includes = PATTERN3.findall(i)
-       
+        pundles = PATTERN4.findall(i)
+
         if title:
             data_title = title.groups(0)[0].strip()
         if desc: 

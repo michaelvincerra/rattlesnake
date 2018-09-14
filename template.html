@@ -2,7 +2,7 @@
 
   <html> 
         <head>
-          <title>Bundles in Clear Linux OS for Intel® Architecture</title>
+          <title>Bundles in Clear Linux* OS</title>
           <style type="text/css">
           table {
              margin: 2em;
@@ -55,23 +55,30 @@
             </thead>
             <tbody>
 
-              {% for bundle in data %}
-              <tr> 
-                  <td class="bundlename"><a href="{{bundle.url}}">{{bundle.data_title}}</a></td>
-                  <td class="bundledesc">{{bundle.data_desc}} </br>
+                {% for bundle in data %}
+                <tr> 
+                    <td class="bundlename"><a href="{{bundle.url}}">{{bundle.data_title}}</a></td>
+                    <td class="bundledesc">{{bundle.data_desc}} </br>
+  
+                      {% if bundle.include_list %}
+                      <p>Includes bundle(s):
+                        {% for include in bundle.include_list %} 
+                        <li>{{include}}</li>
+                        {% endfor %}
+                      </p>
+                      {% endif %}
+                    </td>  
+                </tr>
+                {% endfor %}
 
-                    {% if bundle.include_list %}
-                    <p>Includes bundle(s):
-                      {% for include in bundle.include_list %} 
-                      <li>{{include}}</li>
-                      {% endfor %}
-                    </p>
-                    {% endif %}
-                    
+                <!-- restart here 09.13.18 -->
 
-                  </td>
-              </tr>
-              {% endfor %}
+
+
+
+              
+
+
             </tbody>
 
           </table>

@@ -5,9 +5,7 @@ import git
 
 
 # Next steps: 
-#   Write regex to incorporate all alphabetical items from the pundles
-#   Scrape and capture all pundles from : https://github.com/clearlinux/clr-bundles/blob/master/packages
-#   Cast captured pundles as an array = []
+#   Write regex to incorporate all alphabetical items from the pundles#   
 #   Combine above array with the bundles
 #   Sort all combined items alphabetically.
 #   Write if/else condition in the template logic to show bundle and/or pundle    
@@ -19,7 +17,8 @@ PUNDLES="https://github.com/clearlinux/clr-bundles/blob/master/packages"
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
-PATTERN4 = re.compile(r"^((?!#).)*$", re.MULTILINE)
+PATTERN4 = re.compile(r"""^((?:(?!#).*)+)\n""", re.MULTILINE)
+# PATTERN4 = re.compile(r"^((?!#).)*$", re.MULTILINE)
 
 def extractor(lines): 
     data_title = "title"
@@ -43,28 +42,25 @@ def extractor(lines):
         if includes:
             include_text = includes[0].strip("()")
             include_list.append(include_text)
-        # if pundles: 
-        #     pundles_desc = pundles[0].strip()
-            
-        # # titles_and_pundles = data_title.join(pundles_desc).sorted()
-        # "data_title":titles_and_pundles,
 
     return {"data_desc": data_desc, "data_title":data_title, "url": url, "include_list": include_list}
 
-def pundler(lines):
-    pundle_title = "pundle"
+def pundler(puns):
+    pundle_title = ["pundle_title"]
     url = "url"
+    pundle_list = []
 
-    for i in lines: 
+    for i in puns: 
         pundle = PATTERN4.findall(i)
         if pundle: 
-            pundle_title = pundle[0].strip()
+            pundle_title = pundle[0]
+            pundle_list.append(pundle_title)
         if url: 
             url = PUNDLES
     return {"pundle_title": pundle_title, "url": url }
 
 
-def bundle_lister():# 
+def bundler():# 
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
@@ -72,12 +68,15 @@ def bundle_lister():#
             with open(os.path.join(root, name)) as file_obj:
                 lines = file_obj.readlines()
                 data.append(extractor(lines))
-
-    for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages", topdown=False):
-        for name in files:
-            with open(os.path.join(root, name)) as file_obj:
-                lines = file_obj.readlines()
-                data.append(pundler(lines))
+    
+    # # titles_and_pundles = data_title.join(pundles_desc).sorted()
+    # "data_title":titles_and_pundles,
+    
+    # for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages", topdown=False):
+    #     for name in files:
+    #         with open(os.path.join(root, name)) as file_obj:
+    #             lines = file_obj.readlines()
+    #             data.append(pundler(lines))
 
     loader = jinja2.FileSystemLoader(searchpath='./') 
     env = jinja2.Environment(loader=loader)
@@ -86,6 +85,6 @@ def bundle_lister():#
     with open('bundles01.html', 'w') as file:
         file.write(output)
 
-bundle_lister()
+bundler()
 
 

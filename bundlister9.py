@@ -5,7 +5,8 @@ import git
 
 
 # Next steps: 
-#   Sort alphabetically all combined items --pundles and pundles-- as 'data'.
+#   Combine pundles array with the bundles array
+#   Sort all combined items alphabetically.
 #   Write if/else condition in the template logic to show bundle and/or pundle    
 #   Revise directory structure relative to Makefile in bundle_lister() function. 
 
@@ -43,6 +44,27 @@ def extractor(lines):
 
     return {"data_desc": data_desc, "data_title":data_title, "url": url, "include_list": include_list}
 
+
+
+
+
+
+# def pundler(puns):
+#     pundle_title = ["pundle_title"]
+#     purl = "purl"
+#     pundle_list = []
+
+#     for i in puns: 
+#         pundle = PATTERN4.findall(i)
+
+#         if pundle: 
+#             pundle_title = pundle[0].strip()
+#             pundle_list.append(pundle_title)
+#         if purl: 
+#             purl = PUNDLES
+    
+#     return {"pundle_list": pundle_list, "purl": purl }
+
 def pundler():
 
     with open("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages") as file_obj:
@@ -53,6 +75,7 @@ def pundler():
         
         for i in lines: 
             pundle = PATTERN4.findall(i)
+
             if pundle: 
                 pundle_title = pundle[0]
                 pundle_list.append(pundle_title)
@@ -63,6 +86,8 @@ def pundler():
 def bundler():# 
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []
+    # pundle = pundler()
+
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
@@ -71,6 +96,7 @@ def bundler():#
     data.append(pundler())
     print(data)
     # 09.20.18 Restart here 
+    # sort the list alphabetically | or program if statement in template to process alphabetically. 
  
     loader = jinja2.FileSystemLoader(searchpath='./') 
     env = jinja2.Environment(loader=loader)

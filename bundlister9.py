@@ -19,6 +19,7 @@ PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
 PATTERN4 = re.compile(r"""^((?:(?!#).*)+)\n""", re.MULTILINE)
 # PATTERN4 = re.compile(r"^((?!#).)*$", re.MULTILINE)
 
+
 def extractor(lines): 
     data_title = "title"
     data_desc = "description"
@@ -44,7 +45,6 @@ def extractor(lines):
 
     return {"data_title":data_title, "data_desc": data_desc, "include_list": include_list, "url": url}
 
-
 def pundler():
     with open("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages") as file_obj:
         lines = file_obj.readlines()
@@ -58,9 +58,38 @@ def pundler():
             if pundle: 
                 pundle_title = pundle[0]
                 pundle_list.append(pundle_title)
+
             purl = PUNDLES
-    # print(pundle_list)
+
     return {"pundle_list": pundle_list, "purl": purl }
+
+# def baker(lines): 
+    
+#     data = []
+#     data.append(pundler())
+#     data.append(extractor(lines))
+
+#     for d in data:
+#         if 'data_title':
+#             bundle_title = str(d.get('data_title'))
+#             data.append(bundle_title)
+
+#     for p in data:
+#         if 'pundle_list':
+#             pundle_title = p.get('pundle_list')    
+    
+#     puns = list(pundle_title)
+
+#     for pun in puns:
+#         data.append(pun) 
+
+#     # baking = pundle_title + bundle_title
+#     bread = baking.sort()
+# #   REMOVE NONE !!!! baking = list(filter(None, bakery))
+#     # bread = dict(enumerate(buns,start=1))
+#     print(bread)
+    
+#     return {"bread": bread}
 
 def bundler():# 
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
@@ -70,9 +99,11 @@ def bundler():#
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
-                lines1 = file_obj.readlines()
-                data.append(extractor(lines1))
+                lines = file_obj.readlines()
+                data.append(extractor(lines))
+
     data.append(pundler())
+    # data.append(baker(lines))
     # print(data)
     for d in data:
         if 'data_title':
@@ -88,10 +119,14 @@ def bundler():#
         bakery.append(pun) 
 
     bakery.sort()
-#   REMOVE NONE !!!! baking = list(filter(None, bakery))
+#   REMOVE NONE from for loop !!!! baking = list(filter(None, bakery))
+    # print(bakery)
+  
     baked = dict(enumerate(bakery,start=1))
-    data.append(baked)
-    print(data)
+    bread = baked.values()
+    dozens = {'bread': bread} 
+    data.append(dozens)
+    # print(data)
  
     loader = jinja2.FileSystemLoader(searchpath='./') 
     env = jinja2.Environment(loader=loader)

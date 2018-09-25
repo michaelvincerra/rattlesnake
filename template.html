@@ -57,11 +57,12 @@
 
               {% for bundle in data %}
 
-                <!--if bundle...-->
                 <tr>
                   
                     <td class="bundlename"><a href="{{bundle.url}}">{{bundle.data_title}}</a></td>
                     
+                    <td class="bundledesc">{{bundle.bread}} </br>
+
                     <td class="bundledesc">{{bundle.data_desc}} </br>
   
                       {% if bundle.include_list %}

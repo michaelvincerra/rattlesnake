@@ -1,4 +1,7 @@
 
+               <td class="bundlename"> {% set x = data{'baked'}.__setitem__("combo") %} </td>
+
+
                <!--{% endif %}--> 
 
               <!--{% if pundler %}--> 

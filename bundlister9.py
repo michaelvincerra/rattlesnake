@@ -2,6 +2,7 @@ import os, re, urllib
 import jinja2
 from jinja2 import Environment, FileSystemLoader, Template
 import git
+from bunpun.bundle_pundle import BunPun
 
 
 # Next steps: 
@@ -64,37 +65,61 @@ def pundler():
     return {"pundle_list": pundle_list, "purl": purl }
 
 # def baker(lines): 
+#     """
+#     Output an alphabetized dictionary to be called by its key in template.html
+#     """
+#     bundle_title = "bundle_title"
+#     pundle_title = "pundle_title"
+#     combo_title = []
+
+#     combo_title.append(pundler())
+
+#     for i in lines: 
+#         combo_title.append(extractor(lines))
+    # print(combo_title)
+
+    # if (dict.get('key') is not None) and ('key' in dict):
+
+    # for b in combo_title:
+    #     if 'data_title' is not None and 'data_title' in combo_title:
+    #         bundle_title = b.get('data_title')
+    #         combo_title.append(bundle_title)
+    # #         bundle_title = b.data_title.values() # See error message on the string here. 
+    # #         combo_title.append(bundle_title)
+
+    # for p in combo_title:
+    #     if 'pundle_list' is not None and 'pundle_list' in combo_title:
+    #         pundle_title = p.get('pundle_list')
+    #         combo_title.append(pundle_title)
+
+    # for p in combo_title:
+    #     if 'pundle_list':
+    #         pundle_title = p.get('pundle_list')    
     
-#     data = []
-#     data.append(pundler())
-#     data.append(extractor(lines))
-
-#     for d in data:
-#         if 'data_title':
-#             bundle_title = str(d.get('data_title'))
-#             data.append(bundle_title)
-
-#     for p in data:
-#         if 'pundle_list':
-#             pundle_title = p.get('pundle_list')    
+    # puns = list(pundle_title)
     
-#     puns = list(pundle_title)
+    # for pun in puns:
+    #     combo_title.append(pun) 
 
-#     for pun in puns:
-#         data.append(pun) 
+    # combo_title.sort()
 
-#     # baking = pundle_title + bundle_title
-#     bread = baking.sort()
-# #   REMOVE NONE !!!! baking = list(filter(None, bakery))
-#     # bread = dict(enumerate(buns,start=1))
-#     print(bread)
+
+    # baked = bakery.sort()
+    # combo_title = pundle_title + bundle_title
+
+# #     bread = baking.sort()
+# # #   REMOVE NONE !!!! baking = list(filter(None, bakery))
+# #     # bread = dict(enumerate(buns,start=1))
+    print(combo_title)
     
-#     return {"bread": bread}
+    return {"combo_title": combo_title}
 
-def bundler():# 
+def bundler():
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []
-    bakery =[]   
+    bakery = []
+    bundle_title = "bundle_title"
+    pundle_title = "pundle_title"
 
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
         for name in files:
@@ -106,27 +131,30 @@ def bundler():#
     # data.append(baker(lines))
     # print(data)
     for d in data:
-        if 'data_title':
+        if 'data_title' is not None and 'data_title' in data:
             bundle_title = str(d.get('data_title'))
             bakery.append(bundle_title)
 
     for p in data:
-        if 'pundle_list':
+        if 'pundle_list' is not None and 'pundle_list' in data:
             pundle_title = p.get('pundle_list')    
     
     puns = list(pundle_title)
     for pun in puns:
         bakery.append(pun) 
 
-    bakery.sort()
+    # alphabaked = bakery.sort()
+    # data.append(baker())
 #   REMOVE NONE from for loop !!!! baking = list(filter(None, bakery))
-    # print(bakery)
-  
-    baked = dict(enumerate(bakery,start=1))
-    bread = baked.values()
-    dozens = {'bread': bread} 
-    data.append(dozens)
-    # print(data)
+    
+    # b = {BunPun(k) : v for k, v in baked.items()}
+    # print(b)
+    # baked = dict(enumerate(bakery,start=1))
+    # bread = baked.items()
+    # dozens = {'bread': bread} 
+    # data.append(dozens)
+    print(bakery)
+    print(data)
  
     loader = jinja2.FileSystemLoader(searchpath='./') 
     env = jinja2.Environment(loader=loader)

@@ -1,0 +1,10 @@
+# Dependencies
+1. python==3.6.0
+2. jinja2==2.9.6
+3. gitdb2==2.0.4
+
+# URLS
+# `clr-bundles` bundles folder is downloaded repo that provides the necessary data for use in this web scraper.
+https://github.com/clearlinux/clr-bundles/tree/master/bundles/
+# Inside above repo, the `packages` file is also scraped for data.
+https://github.com/clearlinux/clr-bundles/blob/master/packages

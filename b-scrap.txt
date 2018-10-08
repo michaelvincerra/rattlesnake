@@ -1,23 +1,83 @@
+10.07.18
 
-               <td class="bundlename"> {% set x = data{'baked'}.__setitem__("combo") %} </td>
+# Attempt to add a for loop following the outer for loop that could sort bundle_title and pundle_title alphabetically.
+
+    {%- for d in data|sort(attribute='bundlename') %}
+
+    {% for i in d| dictsort(false) %}
+
+    {% for d in | dictsort(key=combinator) %}
 
 
-               <!--{% endif %}--> 
+def combinator():
+    combo_title = []
+    bundle_title = "bundle_title"
+    combo_title.append(extractor())
+    for d in data:
+        if 'data_title':
+            bundle_title = str(d.get('data_title'))
+            combo_title.append(bundle_title)
+        combo_title.sort()
 
-              <!--{% if pundler %}--> 
+    return {"combo_title": combo_title}
+
+
+
+
+{% for d in data %}
+
+<!-- {% if bundle_only %} -->
+  
+  <tr>
+      <td class="bundlename"><a href="{{d.url}}">{{d.data_title}}</a></td>
+      
+      <td class="bundledesc">{{d.data_desc}} </br>
+        
+        {% if d.include_list %}
+        <p>Includes bundle(s):
+          {% for include in d.include_list %} 
+          <li>{{include}}</li>
+          {% endfor %}
+        </p>
+        {% endif %}
+        
+      </td>  
+  </tr>
+
+<!-- {% else %} -->
+
+  <!-- <tr>
+      <td class="pundlename"><a href="{{d.purl}}">{{d.pundle_list}}</a></td>
+      </td> <p></p> <td>  
+  </tr>   
+
+{% endif %} -->
+
+{% endfor %}
               
-              <!-- {% for pundle in data %}
-              <tr>
-                <td class="pundlename"><a href="{{pundle.pur}}">{{pundle.pundle_list}}</a></td>
-                <td class="pundledesc"></td>
-              </tr>
-              {% endfor %}
               
-              {% endif %} -->
+              
+              
+              
+<td class="bundlename"> {% set x = data{'baked'}.__setitem__("combo") %} </td>
 
 
-                 <tr>
-                    {% for items in data[0]|dictsort %}
-                    <td >{{items.data_desc}} </td>
-                    {% endfor %}
-                </tr>
+<!--{% endif %}--> 
+
+<!--{% if pundler %}--> 
+
+<!-- {% for pundle in data %}
+<tr>
+<td class="pundlename"><a href="{{pundle.pur}}">{{pundle.pundle_list}}</a></td>
+<td class="pundledesc"></td>
+</tr>
+{% endfor %}
+
+{% endif %} -->
+
+
+  <tr>
+    {% for items in data[0]|dictsort %}
+    <td >{{items.data_desc}} </td>
+</tr>
+    {% endfor %}

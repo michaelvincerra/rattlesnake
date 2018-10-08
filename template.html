@@ -1,50 +1,58 @@
 <!DOCTYPE html>
 
   <html> 
-        <head>
-          <title>Bundles in Clear Linux* OS</title>
-          <style type="text/css">
-          table {
-             margin: 2em;
-             border: 1px solid #e0e0e0;
-             border-collapse: collapse;
-             width: auto;
-          }
-       
-          th {
-             align: center;
-             padding: 0.33em;
-             border: #ccc solid 1px;
-             background-color: #555;
-             color: #fff;
-             text-transform: uppercase;
-             font-size: 1.21em
-          }
-       
-          tbody tr:nth-child(odd) {
-             background-color: #e0e0e0;
-          }
-       
-          .bundlename {
-             font-family: monospace;
-             font-size: 1.13em;
-             font-weight: bolder;
-             padding-left: 0.42em;
-          }
+      <head>
+        <title>Bundles in Clear Linux* OS</title>
+        <style type="text/css">
+        table {
+            margin: 2em;
+            border: 1px solid #e0e0e0;
+            border-collapse: collapse;
+            width: auto;
+        }
+      
+        th {
+            align: center;
+            padding: 0.33em;
+            border: #ccc solid 1px;
+            background-color: #555;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1.21em
+        }
+      
+        tbody tr:nth-child(odd) {
+            background-color: #e0e0e0;
+        }
+      
+        .bundlename {
+            font-family: monospace;
+            font-size: 1.13em;
+            font-weight: bolder;
+            padding-left: 0.42em;
+        }
+        
+        .pundlename {
+            font-family: monospace;
+            font-size: 1.13em;
+            font-weight: bolder;
+            padding-left: 0.42em;
+        }
 
-          .bundledesc {
-             font-size: 0.93em;
-             line-height: 0.88em;
-             font-family: sans;
-          }
+        .bundledesc {
+            font-size: 0.93em;
+            line-height: 0.88em;
+            font-family: sans;
+        }
 
-          li,
-          ul {
-             margin-left: 0.53em;
-             padding-left: 0.23em;
-          }
-          </style>
-        </head>
+        li,
+        ul {
+            margin-left: 0.53em;
+            padding-left: 0.23em;
+        }
+        </style>
+      </head>
+
         <body> 
           <table> 
             <thead>
@@ -54,42 +62,42 @@
                 </tr>
             </thead>
             <tbody>
+          
+            {%- for d in data|sort(attribute='bundlename') %}
+                <tr> 
+                  <td class="bundlename"><a href="{{d.url}}">{{d.data_title}}</a></td>
+                    {# Add line break after description #}
+                  <td class="bundledesc">{{d.data_desc}} <br/>
+                      
+                      {% if d.include_list %}
 
-              {% for bundle in data %}
-
-                <!--if bundle...-->
-                <tr>
-                  
-                    <td class="bundlename"><a href="{{bundle.url}}">{{bundle.data_title}}</a></td>
-                    
-                    <td class="bundledesc">{{bundle.data_desc}} </br>
-  
-                      {% if bundle.include_list %}
                       <p>Includes bundle(s):
-                        {% for include in bundle.include_list %} 
+                        {% for include in d.include_list %} 
                         <li>{{include}}</li>
                         {% endfor %}
                       </p>
-                      {% endif %}
+      
+                      {% endif %}      
                     </td>  
                 </tr>
+                    
+              {% if d.pundle_list %}
 
+              {% for p in d.pundle_list %}
                 <tr>
-                {% for item in data %}
-                  <td>
-                    {{item.bread}}
-                  </td>
-                {% endfor %}
-
+                  <td class="bundlename"><a href="{{d.purl}}">{{p}}</a></td>
+                  </td> <td> 
                 </tr>
+              {% endfor %}
+              {% endif %}
 
-                {% endfor %}
-
-
-            </tbody>
-
-          </table>
+          {% endfor %}
 
 
-        </body>
-      </html>
+          </tbody>
+
+        </table>
+
+
+      </body>
+  </html>

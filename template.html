@@ -63,7 +63,7 @@
             </thead>
             <tbody>
           
-            {%- for d in data|sort(attribute='bundlename') %}
+            {%- for d in data %}
                 <tr> 
                   <td class="bundlename"><a href="{{d.url}}">{{d.data_title}}</a></td>
                     {# Add line break after description #}

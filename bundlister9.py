@@ -63,18 +63,37 @@ def pundler():
 
     return {"pundle_list": pundle_list, "purl": purl }
 
+# def combinator(): 
+#     """
+#     Adds pundle titles to the data object to insert as equal to the output k/v pairs in extractor()
+#     """
+#     data_list = []
+#     data_title = "data_title"
+#     data_list.append(pundler())
+
+#     print(data_list)
+
+#     # for p in data_list:
+#     #     if 'pundle_list':
+#     #         data_title = p.get('pundle_list') 
+ 
+#     # puns = list(data_title)
+#     # for pun in puns:
+#     #     data_list.append(pun) 
+
+#     data_list.sort()
+    
+#     return {"data_title": data_title}
 
 def bundler():
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []
-    # bundle_only = []
-
-
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
                 lines = file_obj.readlines()
                 data.append(extractor(lines))
+
     data.append(pundler())
     print(data)
  
@@ -85,7 +104,6 @@ def bundler():
     with open('bundles01.html', 'w') as file:
         file.write(output)
 
-
 def combinator(): 
     """
     Output an alphabetized dictionary to be called by key in template.html
@@ -93,28 +111,24 @@ def combinator():
     combo_title = []
     bundle_title = "bundle_title"
     pundle_title = "pundle_title"
-
     combo_title.append(bundler())
-
     for d in data:
         if 'data_title':
             bundle_title = str(d.get('data_title'))
             combo_title.append(bundle_title)
-
     for p in data:
         if 'pundle_list':
-    #     # if 'pundle_list' is not None and 'pundle_list' in data:            
+        #     # if 'pundle_list' is not None and 'pundle_list' in data:            
             pundle_title = p.get('pundle_list') 
- 
+
     puns = list(pundle_title)
+    
     for pun in puns:
         combo_title.append(pun) 
-
-    combo_title.sort()
     
+    combo_title.sort()
+
     return {"combo_title": combo_title}
-
-
 
 bundler()
 

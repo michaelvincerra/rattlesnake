@@ -5,7 +5,8 @@ import git
 
 
 # Next steps: 
-#   Sort alphabetically all combined items --pundles and pundles-- as 'data'.
+#   Combine pundles array with the bundles array
+#   Sort all combined items alphabetically.
 #   Write if/else condition in the template logic to show bundle and/or pundle    
 #   Revise directory structure relative to Makefile in bundle_lister() function. 
 
@@ -41,18 +42,19 @@ def extractor(lines):
             include_text = includes[0].strip("()")
             include_list.append(include_text)
 
-    return {"data_desc": data_desc, "data_title":data_title, "url": url, "include_list": include_list}
+    return {"data_title":data_title, "data_desc": data_desc, "include_list": include_list, "url": url}
+
 
 def pundler():
-
     with open("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages") as file_obj:
         lines = file_obj.readlines()
         pundle_title = ["pundle_title"]
-        purl = "purl"
+        purl = "purl" # p+url = URL for pundle; constant
         pundle_list = []
         
         for i in lines: 
             pundle = PATTERN4.findall(i)
+
             if pundle: 
                 pundle_title = pundle[0]
                 pundle_list.append(pundle_title)
@@ -63,20 +65,39 @@ def pundler():
 def bundler():# 
     git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     data = []
+    bakery =[]   
+
     for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
                 lines1 = file_obj.readlines()
                 data.append(extractor(lines1))
     data.append(pundler())
+    # print(data)
+    for d in data:
+        if 'data_title':
+            bundle_title = str(d.get('data_title'))
+            bakery.append(bundle_title)
+
+    for p in data:
+        if 'pundle_list':
+            pundle_title = p.get('pundle_list')    
+    
+    puns = list(pundle_title)
+    for pun in puns:
+        bakery.append(pun) 
+
+    bakery.sort()
+#   REMOVE NONE !!!! baking = list(filter(None, bakery))
+    baked = dict(enumerate(bakery,start=1))
+    data.append(baked)
     print(data)
-    # 09.20.18 Restart here 
  
     loader = jinja2.FileSystemLoader(searchpath='./') 
     env = jinja2.Environment(loader=loader)
     template = env.get_template('template.html')
     output = template.render(data=data)
-    with open('bundles01.html', 'w') as file:
+    with open('bundles.html', 'w') as file:
         file.write(output)
 
 bundler()

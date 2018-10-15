@@ -67,9 +67,9 @@ jedi==0.10.2
 Jinja2==2.10
 jsonschema==2.6.0
 jupyter==1.0.0
-jupyter-client==5.0.1
+jupyter-client==5.2.3
 jupyter-console==5.0.0
-jupyter-core==4.3.0
+jupyter-core==4.4.0
 lazy-object-proxy==1.2.2
 llvmlite==0.15.0
 locket==0.2.0
@@ -85,7 +85,7 @@ nbformat==4.3.0
 networkx==1.11
 nltk==3.2.2
 nose==1.3.7
-notebook==5.0.0
+notebook==5.7.0
 numba==0.30.1
 numexpr==2.6.1
 numpy==1.11.3
@@ -107,6 +107,7 @@ pexpect==4.2.1
 pickleshare==0.7.4
 Pillow==4.0.0
 ply==3.9
+prometheus-client==0.4.0
 prompt-toolkit==1.0.14
 protobuf==3.3.0
 psutil==5.0.1
@@ -129,7 +130,7 @@ python-crontab==2.2.3
 python-dateutil==2.6.0
 pytz==2016.10
 PyYAML==3.12
-pyzmq==16.0.2
+pyzmq==17.1.2
 QtAwesome==0.4.3
 qtconsole==4.2.1
 QtPy==1.2.1
@@ -148,6 +149,7 @@ scikit-image==0.12.3
 scikit-learn==0.18.1
 scipy==0.18.1
 seaborn==0.7.1
+Send2Trash==1.5.0
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
 six==1.10.0
@@ -163,7 +165,7 @@ statsmodels==0.6.1
 sympy==1.0
 tables==3.3.0
 tensorflow==1.1.0
-terminado==0.6
+terminado==0.8.1
 testpath==0.3
 tflearn==0.3.1
 toolz==0.8.2

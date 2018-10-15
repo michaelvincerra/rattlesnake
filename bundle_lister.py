@@ -20,22 +20,25 @@ def extractor(lines):
     url = "url"
     include_list = []
 
+
     for i in lines:
         title = PATTERN1.match(i)
         desc = PATTERN2.match(i)
         includes = PATTERN3.findall(i)
-
+        
         if title:
             bundle_title = title.groups(0)[0].strip()
         if desc: 
             data_desc = desc.groups(0)[0].strip()
         if url: 
             url = os.path.join(GITHUB_BASE, bundle_title)
+
         if includes:
             include_text = includes[0].strip("()")
             include_list.append(include_text)
 
     return {"bundle_title":bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
+
 
 def pundler():
     with open("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages") as file_obj:
@@ -45,6 +48,7 @@ def pundler():
         pundle_list = []
         partial_list = []
         pun_title = "pun_title"
+
 
         for i in lines: 
             pundle = PATTERN4.findall(i)
@@ -90,10 +94,9 @@ def bundler():
 
     template = env.get_template('template.html')
     output = template.render(data=DATA)
+
     with open('bundles.html', 'w') as file:
         file.write(output)
 
 bundler()
-
-
 

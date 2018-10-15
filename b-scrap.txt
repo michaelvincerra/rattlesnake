@@ -1,20 +1,309 @@
+        # Inside the pundler() function previously: 
+        
+        for d in DATA:
+            if 'data_title':
+                bundle_title = d['bundle_title']
+                combo_title.append(d)
 
-               <!--{% endif %}--> 
 
-              <!--{% if pundler %}--> 
-              
-              <!-- {% for pundle in data %}
-              <tr>
-                <td class="pundlename"><a href="{{pundle.pur}}">{{pundle.pundle_list}}</a></td>
-                <td class="pundledesc"></td>
-              </tr>
+            {% for p in d.pun_title %} 
+
+                <tr> 
+                <td class="pundlename"><a href="{{d.purl}}">{{p}}</a></td>
+                <td> :0 </td>
+                </tr>
+
+            {% endfor %}
+          
+          
+            {% if d.bundle_title and d.pun_title in d.combo_title%}
+
+  
+            {% if d.pundle_list %}
+
+            {% for p in d.pundle_list %} 
+            <tr>
+            <td class="bundlename"><a href="{{d.purl}}">{{p}}</a></td>
+            </td> <td> 
+            </tr>
+            {% endfor %}
+
+            {% endif %}
+            
+            
+            {%for p in d.combo_title %}
+            <ul>{{p}}</ul>
+            {% endfor %}
+           
+           
+            <!-- {% filter sortof('data_title', 'data_desc') %} -->
+
+                   {% endfor %}
+                   {% for d in data | sortof() %}
+                    <ul>{{d.data_desc}}</ul>
+
+10.11.18
+
+    env = jinja2.Environment(autoescape=True,loader=loader)
+
+    def upper(string):
+        return string.upper() 
+
+    env.filters['upper'] = upper
+
+
+------
+
+template.html
+
+
+<!DOCTYPE html>
+
+  <html> 
+      <head>
+        <title>Bundles in Clear Linux* OS</title>
+        <style type="text/css">
+        table {
+            margin: 2em;
+            border: 1px solid #e0e0e0;
+            border-collapse: collapse;
+            width: auto;
+        }
+      
+        th {
+            align: center;
+            padding: 0.33em;
+            border: #ccc solid 1px;
+            background-color: #555;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1.21em
+        }
+      
+        tbody tr:nth-child(odd) {
+            background-color: #e0e0e0;
+        }
+      
+        .bundlename {
+            font-family: monospace;
+            font-size: 1.13em;
+            font-weight: bolder;
+            padding-left: 0.42em;
+        }
+        
+        .pundlename {
+            font-family: monospace;
+            font-size: 1.13em;
+            font-weight: bolder;
+            padding-left: 0.42em;
+        }
+
+        .bundledesc {
+            font-size: 0.93em;
+            line-height: 0.88em;
+            font-family: sans;
+        }
+
+        li,
+        ul {
+            margin-left: 0.53em;
+            padding-left: 0.23em;
+        }
+        </style>
+      </head>
+
+        <body> 
+          <table> 
+            <thead>
+                <tr>
+                    <th align=left>Bundle Name</th>
+                    <th align=left>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+          
+            {%- for d in data %}
+                {# False: Test if data_title is in pundle_list) #}
+                
+                {% if d.data_title in d.pundle_list %}
+                <tr> 
+                    <td>Ta Dah!</td>
+                {% else %}
+                    <td class="bundlename"><a href="{{d.purl}}">bundle</a></td>
+                    <td> ): </td>
+                </tr>
+                {% endif %}
+
+                <tr> 
+                  <td class="bundlename"><a href="{{d.url}}">{{d.data_title}}</a></td>
+                  <td class="bundledesc">{{d.data_desc}} <br/>
+                      
+                      {% if d.include_list %}
+
+                      <p>Includes bundle(s):
+                        {% for include in d.include_list %} 
+                        <li>{{include}}</li>
+                        {% endfor %}
+                      </p>
+      
+                      {% endif %}      
+                    </td>  
+                </tr>
+    {#                 
+                {% if d.pundle_list %}
+
+                    {% for p in d.pundle_list %}
+                        <tr>
+                        <td class="bundlename"><a href="{{d.purl}}">{{p}}</a></td>
+                        </td> <td> 
+                        </tr>
+                    {% endfor %}
+
+              {% endif %}
+              #}  
+
+          {% endfor %}
+                   
+
+          </tbody>
+
+        </table>
+
+
+      </body>
+  </html>
+
+
+
+10.10.18
+
+                {% if d.data_title in d.pundle_items %}
+                    <tr> 
+                        <td>Ta Dah!</td>
+                    </tr>    
+
+                {% else %}
+    
+                    {% for p in d.pundle_items %}
+                        <tr> 
+                            <td class="bundlename"><a href="{{d.purl}}">{{p}}</a></td>
+                            <td> </td>
+                        </tr>
+                    {% endfor %}
+
+
+                {% endif %}
+
+
+-------------
+
+                {% if d.pundle_list %}
+
+                    {% for p in d.pundle_list %}
+                        <tr>
+                        <td class="bundlename"><a href="{{d.purl}}">{{p}}</a></td>
+                        </td> <td> 
+                        </tr>
+                    {% endfor %}
+
+              {% endif %}
+-------------
+
+
+              {% if d.pundle_list %}
+
+              {% for p in d.pundle_list %}
+                <tr>
+                  <td class="bundlename"><a href="{{d.purl}}">{{p}}</a></td>
+                  </td> <td> 
+                </tr>
               {% endfor %}
               
-              {% endif %} -->
+              {% endif %}
+
+          {% endfor %}
 
 
-                 <tr>
-                    {% for items in data[0]|dictsort %}
-                    <td >{{items.data_desc}} </td>
-                    {% endfor %}
-                </tr>
+10.07.18
+
+# Attempt to add a for loop following the outer for loop that could sort bundle_title and pundle_title alphabetically.
+
+    {%- for d in data|sort(attribute='bundlename') %}
+
+    {% for i in d| dictsort(false) %}
+
+    {% for d in | dictsort(key=combinator) %}
+
+
+def combinator():
+    combo_title = []
+    bundle_title = "bundle_title"
+    combo_title.append(extractor())
+    for d in data:
+        if 'data_title':
+            bundle_title = str(d.get('data_title'))
+            combo_title.append(bundle_title)
+        combo_title.sort()
+
+    return {"combo_title": combo_title}
+
+
+
+
+{% for d in data %}
+
+<!-- {% if bundle_only %} -->
+  
+  <tr>
+      <td class="bundlename"><a href="{{d.url}}">{{d.data_title}}</a></td>
+      
+      <td class="bundledesc">{{d.data_desc}} </br>
+        
+        {% if d.include_list %}
+        <p>Includes bundle(s):
+          {% for include in d.include_list %} 
+          <li>{{include}}</li>
+          {% endfor %}
+        </p>
+        {% endif %}
+        
+      </td>  
+  </tr>
+
+<!-- {% else %} -->
+
+  <!-- <tr>
+      <td class="pundlename"><a href="{{d.purl}}">{{d.pundle_list}}</a></td>
+      </td> <p></p> <td>  
+  </tr>   
+
+{% endif %} -->
+
+{% endfor %}
+              
+              
+              
+              
+              
+<td class="bundlename"> {% set x = data{'baked'}.__setitem__("combo") %} </td>
+
+
+<!--{% endif %}--> 
+
+<!--{% if pundler %}--> 
+
+<!-- {% for pundle in data %}
+<tr>
+<td class="pundlename"><a href="{{pundle.pur}}">{{pundle.pundle_list}}</a></td>
+<td class="pundledesc"></td>
+</tr>
+{% endfor %}
+
+{% endif %} -->
+
+
+  <tr>
+    {% for items in data[0]|dictsort %}
+    <td >{{items.data_desc}} </td>
+</tr>
+    {% endfor %}

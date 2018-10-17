@@ -49,7 +49,6 @@ def pundler():
         partial_list = []
         pun_title = "pun_title"
 
-
         for i in lines: 
             pundle = PATTERN4.findall(i)
 

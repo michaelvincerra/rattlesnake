@@ -41,7 +41,7 @@ def extractor(lines):
 
 
 def pundler():
-    with open("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/packages") as file_obj:
+    with open("./cloned_repo/clr-bundles/packages") as file_obj:
         lines = file_obj.readlines()
         pundle_title = ["pundle_title"]
         purl = "purl" # p+url = URL for pundle; constant
@@ -72,8 +72,8 @@ def pundler():
 
 def bundler():
 
-    git.Git("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
-    for root, dirs, files in os.walk("/Users/michaelevan/temp/intel_python/rattlesnake/cloned_repo/clr-bundles/bundles", topdown=False):
+    git.Git("./cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
+    for root, dirs, files in os.walk("./cloned_repo/clr-bundles/bundles", topdown=False):
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
                 lines = file_obj.readlines()

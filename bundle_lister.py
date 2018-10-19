@@ -6,8 +6,6 @@ from jinja2 import Environment, FileSystemLoader, Template
 import git
 from operator import itemgetter
 
-DATA = []
-
 GITHUB_BASE = "https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
 PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages"
 
@@ -39,7 +37,7 @@ def extractor(lines):
             include_text = includes[0].strip("()")
             include_list.append(include_text)
 
-    return {"bundle_title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
+    return {"title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
 
 
 def pundler():
@@ -50,27 +48,18 @@ def pundler():
         pundle_list = []
         partial_list = []
         pun_title = "pun_title"
-
         for i in lines:
             pundle = PATTERN4.findall(i)
-
             if pundle:
                 pundle_title = pundle[0].strip()
                 pundle_list.append(pundle_title)
-
         for pun in pundle_list:
-            partial_list.append(pun)
-
-        partial_list = sorted(partial_list)
-
-        pun_title = [pu for pu in pundle_list]
-
-        purl = PUNDLES
-
-    return {"pundle_list": pundle_list, "purl": purl, "partial_list": partial_list, "pun_title": pun_title}
+            partial_list.append({"title": pun, "purl": PUNDLES})
+    return partial_list
 
 
 def bundler():
+    data = []
 
     try:
         git.Git("./cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
@@ -80,14 +69,12 @@ def bundler():
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
                 lines = file_obj.readlines()
-                DATA.append(extractor(lines))
+                data.append(extractor(lines))
 
-    DATA.append(pundler())
-    print(len(DATA))
-    filtered = list(filter(lambda x: x.get('bundle_title'), DATA))
-    print(len(filtered))
-    sortedData = sorted(filtered, key=itemgetter('bundle_title'))
-    print(sortedData[3])
+    partial_list = pundler()
+    data = data + partial_list
+    filtered = list(filter(lambda x: x.get('title'), data))
+    sortedData = sorted(filtered, key=itemgetter('title'))
 
     loader = jinja2.FileSystemLoader(searchpath='./')
     env = jinja2.Environment(loader=loader)

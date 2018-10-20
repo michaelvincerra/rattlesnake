@@ -7,13 +7,13 @@ import git
 from operator import itemgetter
 
 GITHUB_BASE = "https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
-PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages"
+PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages-descriptions"
 
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
-PATTERN4 = re.compile(r"""^((?:(?!#).*)+)\n""", re.MULTILINE)
-
+PATTERN4 = re.compile(r"^((?:(?!#).+?[^-]+))", re.MULTILINE)
+PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
 
 def extractor(lines):
     bundle_title = "title"
@@ -39,28 +39,35 @@ def extractor(lines):
 
     return {"title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
 
-
 def pundler():
-    with open("./cloned_repo/clr-bundles/packages") as file_obj:
+    with open("./cloned_repo/clr-bundles/packages-descriptions") as file_obj:
         lines = file_obj.readlines()
-        pundle_title = ["pundle_title"]
+        pundle_title = "pundle_title"
+        pundle_desc = "pundle_desc"
         purl = "purl"  # p+url = URL for pundle; constant
         pundle_list = []
-        partial_list = []
-        pun_title = "pun_title"
+        pundle_master = []
+        pun_desc = []
+        
         for i in lines:
             pundle = PATTERN4.findall(i)
+            pundle_plus = PATTERN5.findall(i)
             if pundle:
                 pundle_title = pundle[0].strip()
                 pundle_list.append(pundle_title)
-        for pun in pundle_list:
-            partial_list.append({"title": pun, "purl": PUNDLES})
-    return partial_list
+
+            if pundle_plus:
+                pundle_desc = pundle_plus[0].strip("[]")
+                pun_desc.append(pundle_desc)
+
+        for pun, desc in zip(pundle_list, pun_desc): 
+                pundle_master.append({"title": pun, "pun_desc": desc, "purl": PUNDLES})
+
+    return pundle_master
 
 
 def bundler():
     data = []
-
     try:
         git.Git("./cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     except:
@@ -71,25 +78,15 @@ def bundler():
                 lines = file_obj.readlines()
                 data.append(extractor(lines))
 
-    partial_list = pundler()
-    data = data + partial_list
+    pundle_master = pundler()
+    data = data + pundle_master
     filtered = list(filter(lambda x: x.get('title'), data))
     sortedData = sorted(filtered, key=itemgetter('title'))
-
     loader = jinja2.FileSystemLoader(searchpath='./')
     env = jinja2.Environment(loader=loader)
-
-    def order_by(queryset, args):
-        args = [x.strip() for x in args.split(',')]
-        return queryset.order_by(*args)
-
-    env.filters['order_by'] = order_by
-
     template = env.get_template('template.html')
     output = template.render(data=sortedData)
-
     with open('bundles.html', 'w') as file:
         file.write(output)
-
-
+        
 bundler()

@@ -7,17 +7,13 @@ import git
 from operator import itemgetter
 
 GITHUB_BASE = "https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
-# PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages"
 PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages-descriptions"
 
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
-# PATTERN4 = re.compile(r"""^((?:(?!#).*)+)\n""", re.MULTILINE)
 PATTERN4 = re.compile(r"^((?:(?!#).+?[^-]+))", re.MULTILINE)
 PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
-#(?<=\s\-\s)(\w+.*) BEST
-# \w*(?:(-)|#)(?<=\-).*$
 
 def extractor(lines):
     bundle_title = "title"
@@ -43,7 +39,6 @@ def extractor(lines):
 
     return {"title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
 
-
 def pundler():
     with open("./cloned_repo/clr-bundles/packages-descriptions") as file_obj:
         lines = file_obj.readlines()
@@ -52,28 +47,21 @@ def pundler():
         purl = "purl"  # p+url = URL for pundle; constant
         pundle_list = []
         pundle_master = []
+        pun_desc = []
         
         for i in lines:
             pundle = PATTERN4.findall(i)
             pundle_plus = PATTERN5.findall(i)
-            print(pundle_plus)
-
             if pundle:
                 pundle_title = pundle[0].strip()
                 pundle_list.append(pundle_title)
 
-        #     if pundle_plus:
-        #         pundle_desc = pundle_plus[0].strip("[]")
-        #         pundle_list.append(pundle_desc)
-        # print(pundle_list)
+            if pundle_plus:
+                pundle_desc = pundle_plus[0].strip("[]")
+                pun_desc.append(pundle_desc)
 
-        # 'pundle_desc' must be a part of the pundle_master object for iteration purposes
-        for pun in pundle_list:  # "pundle_desc": pundle_desc
-            pundle_master.append({"title": pun, "purl": PUNDLES})
-
-        # for desc in pundle_list:
-        #     pundle_master.append({"pundle_desc": desc})
-        # print(pundle_master)
+        for pun, desc in zip(pundle_list, pun_desc): 
+                pundle_master.append({"title": pun, "pun_desc": desc, "purl": PUNDLES})
 
     return pundle_master
 
@@ -98,9 +86,7 @@ def bundler():
     env = jinja2.Environment(loader=loader)
     template = env.get_template('template.html')
     output = template.render(data=sortedData)
-
     with open('bundles.html', 'w') as file:
         file.write(output)
-
-
+        
 bundler()

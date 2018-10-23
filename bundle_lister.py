@@ -46,8 +46,8 @@ def pundler():
         pundle_desc = "pundle_desc"
         purl = "purl"  # p+url = URL for pundle; constant
         pundle_list = []
-        pundle_master = []
         pun_desc = []
+        pundle_master = []
         
         for i in lines:
             pundle = PATTERN4.findall(i)

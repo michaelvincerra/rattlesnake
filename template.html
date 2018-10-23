@@ -8,20 +8,24 @@
 
   <style type="text/css">
     table {
-      margin: 2em;
+      margin: 32px;
       border: 1px solid #e0e0e0;
       border-collapse: collapse;
-      width: auto;
+      width: auto;    
     }
-
     th {
-      align: center;
-      padding: 0.33em;
+      font-family: IntelClear-Regular,Helvetica,Arial,sans-serif;
+      align-content: center;
+      padding: 5px;
       border: #ccc solid 1px;
       background-color: #555;
       color: #fff;
       text-transform: uppercase;
-      font-size: 1.21em
+      font-size: 18px;
+    }
+    tr {
+      padding-top: 20px ;
+      padding-bottom: 10px;
     }
 
     tbody tr:nth-child(odd) {
@@ -29,53 +33,44 @@
     }
 
     .bundlename {
-      font-family: monospace;
-      font-size: 1.13em;
+      font-family: IntelClear-Regular,Helvetica,Arial,sans-serif;
+      font-size: 16px;
       font-weight: bolder;
-      padding-left: 0.42em;
+      padding-left: 6px;
+      line-height: 18px;
+      padding-top:7px ;
+      padding-bottom: 5px; 
     }
-
-    .pundlename {
-      font-family: monospace;
-      font-size: 1.13em;
-      font-weight: bolder;
-      padding-left: 0.42em;
-    }
-
     .bundledesc {
-      font-size: 0.93em;
-      line-height: 0.88em;
-      font-family: sans;
+      font-family: IntelClear-Regular,Helvetica,Arial,sans-serif;
+      font: italic;
+      font-size: 16px;
+      padding-left: 6px;
+      line-height: 18px;
+      padding-top: 7px ;
+      padding-bottom: 5px;
     }
 
-    li,
-    ul {
-      margin-left: 0.53em;
-      padding-left: 0.23em;
+    ul, li {
+      margin-left: 8px;
+      /* padding: 0; */
+      padding-left: 5px;
+      padding-top: 2px; 
+      line-height: 16px;
     }
+
   </style>
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script>
-    setTimeout(function () {
-      console.log("After timeout: " + new Date());
-    }, 60 * 1000)
-    $(document).ready(function () {
-      $('#example').DataTable({
-        "order": [[3, "desc"]]
-      });
-    });
-
-  </script>
 </head>
 
 <body>
-  <table id="example">
+  <table id="bundletable">
 
     <thead>
       <tr>
-        <th align=left> Name</th>
-        <th align=left> Description</th>
+        <th> Name</th>
+        <th> Description</th>
       </tr>
     </thead>
     <tbody>
@@ -96,7 +91,7 @@
       {% else %}
       <tr id="pundle">
         <td class="bundlename"><a href="{{d.purl}}">{{d.title}}</a></td>
-        <td> {{d.pun_desc}} </td>
+        <td class="bundledesc"> {{d.pun_desc}} </td>
       </tr>
       {% endif %}
       {% endfor %}

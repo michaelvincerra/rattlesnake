@@ -5,6 +5,7 @@ import jinja2
 from jinja2 import Environment, FileSystemLoader, Template
 import git
 from operator import itemgetter
+from datetime import datetime 
 
 GITHUB_BASE = "https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
 PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages-descriptions"
@@ -43,7 +44,7 @@ def pundler():
         lines = file_obj.readlines()
         pundle_title = "pundle_title"
         pundle_desc = "pundle_desc"
-        purl = "purl"  # p+url = URL for pundle; constant
+        purl = "purl" 
         pundle_list = []
         pun_desc = []
         pundle_master = []
@@ -51,6 +52,7 @@ def pundler():
         for i in lines:
             pundle = PATTERN4.findall(i)
             pundle_plus = PATTERN5.findall(i)
+            
             if pundle:
                 pundle_title = pundle[0].strip()
                 pundle_list.append(pundle_title)
@@ -65,7 +67,6 @@ def pundler():
 
 def bundler():
     data = []
-
     try:
         git.Git("./cloned_repo/").clone("https://github.com/clearlinux/clr-bundles.git")
     except:
@@ -77,15 +78,17 @@ def bundler():
                 data.append(extractor(lines))
 
     pundle_master = pundler()
-    data = data + pundle_master
+    print(pundle_master)
+    data = data + pundle_master 
     filtered = list(filter(lambda x: x.get('title'), data))
-    sortedData = sorted(filtered, key=lambda x:x['title'].lower()) 
+    sortedData = sorted(filtered, key=lambda x:x['title'].lower())
     #ALT sortedData2 = sorted(sortedData, key=itemgetter('title'))
     loader = jinja2.FileSystemLoader(searchpath='./')
     env = jinja2.Environment(loader=loader)
     template = env.get_template('template.html')
-    
-    output = template.render(data=sortedData)
+    template.globals['now'] = datetime.utcnow
+
+    output = template.render(data=sortedData, now=datetime.utcnow())
     with open('bundles.html', 'w') as file:
         file.write(output)   
           

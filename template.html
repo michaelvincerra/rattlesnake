@@ -60,21 +60,26 @@
     }
 
   </style>
-  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </head>
 
 <body>
   <table id="bundletable">
 
     <thead>
-      <tr>
         <th> Name</th>
         <th> Description</th>
       </tr>
     </thead>
     <tbody>
+      <tr>    
+        <td></td> 
+        <td style="text-align:right; font-family:IntelClear-Regular,Helvetica,Arial; font-style:italic"> 
+          Updated: {{ now.strftime('%x %H:%M') }} UTC
+        </td>
+      </tr>
+    <tr></tr>
       {% for d in data %}
+      {{ d.adesso}}
       {% if d.url %}
       <tr id="bundle">
         <td class="bundlename" id="bundle"><a href="{{d.url}}">{{d.title}}</a></td>

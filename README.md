@@ -1,7 +1,12 @@
 `bundle_lister.py` is a Python (3.6.0) web scraper that clones the clr-bundles directory, https://github.com/clearlinux/clr-bundles, parses content in bundles directory and packages file,
-and then uses Jinja2 to output a file: bundles.html. This html file is a table that appears in webpage. `bundle_lister.py` will be invoked in a bash script upon daily builds of the website. `bundle_lister.py` automates documentation so it shows current bundles and packages per latest updates to the clr-bundles GitHub repository.  
+and then uses Jinja2 to output a file: bundles.html.txt. This ``.txt`` file is a table that appears in a webpage.
 
-See `requirements.txt` for modules/packages necessary for environment. 
+`bundle_lister.py` will be invoked in a bash script upon daily builds of the website. `bundle_lister.py` automates 
+documentation so it shows current bundles and packages per latest updates to the clr-bundles GitHub repository.  
+
+See `requirements.txt` for package dependencies necessary for this application.
+
+Python==3.6.0
 
 To run `bundle_lister.py` in the terminal, enter: `python bundle_lister.py`.
 

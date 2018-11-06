@@ -78,7 +78,6 @@ def bundler():
                 data.append(extractor(lines))
 
     pundle_master = pundler()
-    print(pundle_master)
     data = data + pundle_master 
     filtered = list(filter(lambda x: x.get('title'), data))
     sortedData = sorted(filtered, key=lambda x:x['title'].lower())

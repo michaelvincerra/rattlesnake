@@ -84,11 +84,11 @@ def bundler():
     #ALT sortedData2 = sorted(sortedData, key=itemgetter('title'))
     loader = jinja2.FileSystemLoader(searchpath='./')
     env = jinja2.Environment(loader=loader)
-    template = env.get_template('template.html.txt')
+    template = env.get_template('template.html')
     template.globals['now'] = datetime.utcnow
 
     output = template.render(data=sortedData, now=datetime.utcnow())
-    with open('bundles.html', 'w') as file:
+    with open('bundles.html.txt', 'w') as file:
         file.write(output)   
           
 bundler()

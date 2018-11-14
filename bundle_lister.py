@@ -13,7 +13,9 @@ PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages-descri
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
-PATTERN4 = re.compile(r"^((?:(?!#).+?[^-]+))", re.MULTILINE)
+PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
+# ALT PATTERN4 = re.compile(r"^((?:(?!#)(\w+[^-\s])[-]\w+.)[^\s]{1,}[^\s]|\w+[^\s-])", re.MULTILINE)
+
 PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
 
 def extractor(lines):
@@ -54,7 +56,7 @@ def pundler():
             pundle_plus = PATTERN5.findall(i)
             
             if pundle:
-                pundle_title = pundle[0].strip()
+                pundle_title = pundle[0]
                 pundle_list.append(pundle_title)
 
             if pundle_plus:

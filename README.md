@@ -13,5 +13,7 @@ To run `bundle_lister.py` in the terminal, enter: `python bundle_lister.py`.
 Note: The `cloned_repo` directory must remain in the parent directory in order for this code to work.
 
 Note: A successful build will produce a file named `bundles.html.txt` showing a table of current bundles and pundles (packages) alphabetized, with a (UTC) time and date stamp in the right corner. 
+An unsuccessful build will result in traceback errors, which should be analyzed before running a new build. 
+
 
 `~$~`

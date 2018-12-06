@@ -16,8 +16,8 @@ PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
 PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
 # ALT PATTERN4 = re.compile(r"^((?:(?!#)(\w+[^-\s])[-]\w+.)[^\s]{1,}[^\s]|\w+[^\s-])", re.MULTILINE)
 
-PATTERN5 = re.compile(r"[#]\s(\w+.*)?", re.MULTILINE)
-# PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
+PATTERN5 = re.compile(r"^(?!=a)\w.+\s[#]\s(\w+.*)?", re.MULTILINE)
+# Previous version: PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
 
 def extractor(lines):
     bundle_title = "title"

@@ -8,7 +8,7 @@ from operator import itemgetter
 from datetime import datetime 
 
 GITHUB_BASE = "https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
-PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages-descriptions"
+PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages"
 
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
@@ -16,7 +16,8 @@ PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
 PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
 # ALT PATTERN4 = re.compile(r"^((?:(?!#)(\w+[^-\s])[-]\w+.)[^\s]{1,}[^\s]|\w+[^\s-])", re.MULTILINE)
 
-PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
+PATTERN5 = re.compile(r"[#]\s(\w+.*)?", re.MULTILINE)
+# PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
 
 def extractor(lines):
     bundle_title = "title"
@@ -42,7 +43,7 @@ def extractor(lines):
     return {"title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
 
 def pundler():
-    with open("./cloned_repo/clr-bundles/packages-descriptions") as file_obj:
+    with open("./cloned_repo/clr-bundles/packages") as file_obj:
         lines = file_obj.readlines()
         pundle_title = "pundle_title"
         pundle_desc = "pundle_desc"

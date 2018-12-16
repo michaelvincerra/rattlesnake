@@ -1,3 +1,4 @@
+import io
 import os
 import re
 import urllib
@@ -43,7 +44,7 @@ def extractor(lines):
     return {"title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
 
 def pundler():
-    with open("./cloned_repo/clr-bundles/packages") as file_obj:
+    with io.open("./cloned_repo/clr-bundles/packages") as file_obj:
         lines = file_obj.readlines()
         pundle_title = "pundle_title"
         pundle_desc = "pundle_desc"
@@ -91,7 +92,7 @@ def bundler():
     template.globals['now'] = datetime.utcnow
 
     output = template.render(data=sortedData, now=datetime.utcnow())
-    with open('bundles.html.txt', 'w') as file:
+    with io.open('bundles.html.txt', 'w') as file:
         file.write(output)   
           
 bundler()

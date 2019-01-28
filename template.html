@@ -34,9 +34,11 @@
         <td class="bundledesc">{{d.data_desc}} <br />
           {% if d.include_list %}
           <p>Includes bundle(s):
-            {% for include in d.include_list %}
-            <li>{{include}}</li>
-            {% endfor %}
+            <ul> 
+              {% for include in d.include_list %}
+              <li>{{include}}</li>
+              {% endfor %}
+            </ul>
           </p>
           {% endif %}
         </td>

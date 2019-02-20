@@ -13,7 +13,7 @@ PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages"
 
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
-PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
+PATTERN3 = re.compile(r"\(([^()]*|include).*\)", re.MULTILINE)
 PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
 # ALT PATTERN4 = re.compile(r"^((?:(?!#)(\w+[^-\s])[-]\w+.)[^\s]{1,}[^\s]|\w+[^\s-])", re.MULTILINE)
 

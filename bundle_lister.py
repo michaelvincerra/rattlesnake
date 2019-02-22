@@ -16,8 +16,8 @@ PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
 PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
 PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
 # ALT PATTERN4 = re.compile(r"^((?:(?!#)(\w+[^-\s])[-]\w+.)[^\s]{1,}[^\s]|\w+[^\s-])", re.MULTILINE)
-
-PATTERN5 = re.compile(r"^(?!=a)\w.+\s[#]\s(\w+.*)?", re.MULTILINE)
+PATTERN5 = re.compile(r"^\w.+\s[#]\s(\w?.*)?", re.MULTILINE)
+# PATTERN5 = re.compile(r"^(?!=a)\w.+\s[#]\s(\w?.*)?", re.MULTILINE)
 # Previous version: PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
 
 def extractor(lines):
@@ -25,6 +25,7 @@ def extractor(lines):
     data_desc = "description"
     url = "url"
     include_list = []
+    include_unique = []
 
     for i in lines:
         title = PATTERN1.match(i)
@@ -41,7 +42,8 @@ def extractor(lines):
         if includes:
             include_text = includes[0].strip("()")
             include_list.append(include_text)
-    return {"title": bundle_title, "data_desc": data_desc, "include_list": include_list, "url": url}
+            include_unique = set(include_list)
+    return {"title": bundle_title, "data_desc": data_desc, "include_list": include_unique, "url": url}
 
 def pundler():
     with io.open("./cloned_repo/clr-bundles/packages") as file_obj:

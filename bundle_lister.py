@@ -9,16 +9,29 @@ from operator import itemgetter
 from datetime import datetime 
 
 GITHUB_BASE = "https://github.com/clearlinux/clr-bundles/tree/master/bundles/"
-PUNDLES = "https://github.com/clearlinux/clr-bundles/blob/master/packages"
-
+#  
 PATTERN1 = re.compile(r"#\s?\[TITLE]:\w?(.*)")
 PATTERN2 = re.compile(r"#\s?\[DESCRIPTION]:\w?(.*)")
-PATTERN3 = re.compile(r"\(([^()]*|include)\)", re.MULTILINE)
-PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
+PATTERN3 = re.compile(r"(?<=include)\(.*\)", re.MULTILINE)
+# ?P<name>include)\(([^()]*)\)
+# \(([^()]*|include)\)
+# PATTERN4 = re.compile(r"^((?:(?!#)\w+[^-\s][-])\w+|\w+[^\s-])", re.MULTILINE)
 # ALT PATTERN4 = re.compile(r"^((?:(?!#)(\w+[^-\s])[-]\w+.)[^\s]{1,}[^\s]|\w+[^\s-])", re.MULTILINE)
-PATTERN5 = re.compile(r"^\w.+\s[#]\s(\w?.*)?", re.MULTILINE)
+# PATTERN5 = re.compile(r"^\w.+\s[#]\s(\w?.*)?", re.MULTILINE)
+PATTERN6 = re.compile(r"#\sstart of.+(?:\n.+)+(?<=# end of custom additions)", re.MULTILINE)
+
+# "\#(?:.|[\r\n])*?\#.*"
+# (?<=# start of custom additions)[.|\n\r\W|\w]*\s?[.|\n\r\W|\w]*\s?\Z"
+#(?<=# start of custom additions).*((?:(?:\n|\r\n?).+)+)
 # PATTERN5 = re.compile(r"^(?!=a)\w.+\s[#]\s(\w?.*)?", re.MULTILINE)
 # Previous version: PATTERN5 = re.compile(r"^[^#].*(?<=\s\-\s)(\w+.*)?", re.MULTILINE)
+# PATTERN6 = re.compile(r"# start of custom additions
+
+# 08-12-19 Restart here 
+
+# def raptor(string): 
+#     string = re.sub(re.compile("\#(?:.|[\r\n])*?\#.*", re.MULTILINE ),"",string) 
+#     del string
 
 def extractor(lines):
     bundle_title = "title"
@@ -26,11 +39,19 @@ def extractor(lines):
     url = "url"
     include_list = []
     include_unique = []
+    comment_remove = []
 
     for i in lines:
         title = PATTERN1.match(i)
         desc = PATTERN2.match(i)
         includes = PATTERN3.findall(i)
+        comment = PATTERN6.findall(i)
+
+        # 08-12-19 Restart here 
+        # if comment:
+        #     comment_remove = comment
+        #     print(comment_remove)
+        #     del(comment_remove)
 
         if title:
             bundle_title = title.groups(0)[0].strip()
@@ -43,33 +64,36 @@ def extractor(lines):
             include_text = includes[0].strip("()")
             include_list.append(include_text)
             include_unique = set(include_list)
+
+ 
+
     return {"title": bundle_title, "data_desc": data_desc, "include_list": include_unique, "url": url}
 
-def pundler():
-    with io.open("./cloned_repo/clr-bundles/packages") as file_obj:
-        lines = file_obj.readlines()
-        pundle_title = "pundle_title"
-        pundle_desc = "pundle_desc"
-        purl = "purl" 
-        pundle_list = []
-        pun_desc = []
-        pundle_master = []
+# def pundler():
+#     with io.open("./cloned_repo/clr-bundles/packages") as file_obj:
+#         lines = file_obj.readlines()
+#         pundle_title = "pundle_title"
+#         pundle_desc = "pundle_desc"
+#         purl = "purl" 
+#         pundle_list = []
+#         pun_desc = []
+#         pundle_master = []
         
-        for i in lines:
-            pundle = PATTERN4.findall(i)
-            pundle_plus = PATTERN5.findall(i)
+#         for i in lines:
+#             pundle = PATTERN4.findall(i)
+#             pundle_plus = PATTERN5.findall(i)
             
-            if pundle:
-                pundle_title = pundle[0]
-                pundle_list.append(pundle_title)
+#             if pundle:
+#                 pundle_title = pundle[0]
+#                 pundle_list.append(pundle_title)
 
-            if pundle_plus:
-                pundle_desc = pundle_plus[0].strip("[]")
-                pun_desc.append(pundle_desc)
+#             if pundle_plus:
+#                 pundle_desc = pundle_plus[0].strip("[]")
+#                 pun_desc.append(pundle_desc)
 
-        for pun, desc in zip(pundle_list, pun_desc): 
-                pundle_master.append({"title": pun, "pun_desc": desc, "purl": PUNDLES})
-    return pundle_master
+#         for pun, desc in zip(pundle_list, pun_desc): 
+#                 pundle_master.append({"title": pun, "pun_desc": desc, "purl": PUNDLES})
+#     return pundle_master
 
 def bundler():
     data = []
@@ -81,10 +105,12 @@ def bundler():
         for name in files:
             with open(os.path.join(root, name)) as file_obj:
                 lines = file_obj.readlines()
+                # data.append(raptor(lines))
                 data.append(extractor(lines))
 
-    pundle_master = pundler()
-    data = data + pundle_master 
+
+    # pundle_master = pundler()
+    # data = data + pundle_master 
     filtered = list(filter(lambda x: x.get('title'), data))
     sortedData = sorted(filtered, key=lambda x:x['title'].lower())
     #ALT sortedData2 = sorted(sortedData, key=itemgetter('title'))
@@ -94,7 +120,7 @@ def bundler():
     template.globals['now'] = datetime.utcnow
 
     output = template.render(data=sortedData, now=datetime.utcnow())
-    with io.open('bundles.html.txt', 'w') as file:
+    with io.open('bundles.html', 'w') as file:
         file.write(output)   
           
 bundler()

@@ -46,3 +46,7 @@ tr {
   padding-top: 2px; 	
   line-height: 16px;	
 }	
+
+.pending-delete {
+  color:#ce2029;	
+}

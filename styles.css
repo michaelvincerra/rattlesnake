@@ -46,3 +46,19 @@ tr {
   padding-top: 2px; 	
   line-height: 16px;	
 }	
+
+.active-status {
+  color:#358ccb;
+}
+
+ .wip-status {
+  color:#59ca6b;
+}
+
+ .deprecated-status {
+  color:#f94f24;
+}
+
+ .pending-delete-status {
+  color:#ce2029; 
+}

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=======
 #!/usr/bin/env python3
-
->>>>>>> cfe8840... Revises regex PATTERN4; adds status k-v pair; revises bundler to main().
 import io
 import os
 import re
